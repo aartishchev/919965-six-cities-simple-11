@@ -1,6 +1,6 @@
 # Личный проект «Шесть городов (простой)»
 
-* Студент: [Алексей Артищев](https://up.htmlacademy.ru/react/11/user/919965).
+* Студент: [Алексей Артищев](https://htmlacademy.ru/profile/aartishchev).
 * Наставник: [Олег Глущенко](https://htmlacademy.ru/profile/id305355).
 
 ---
