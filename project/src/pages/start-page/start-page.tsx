@@ -1,4 +1,8 @@
+import { Helmet } from 'react-helmet-async';
 import PlaceItem from '../../components/place-item/place-item';
+import LogoLink from '../../components/logo-link/logo-link';
+
+
 type StartPageProps = {
   placesFound: number;
 }
@@ -6,13 +10,14 @@ type StartPageProps = {
 function StartPage({ placesFound }: StartPageProps): JSX.Element {
   return (
     <>
+      <Helmet>
+        <title>Six cities. Time to travel!</title>
+      </Helmet>
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <a className="header__logo-link header__logo-link--active">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41" />
-              </a>
+              <LogoLink />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">
