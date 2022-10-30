@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import LogoLink from '../../components/logo-link/logo-link';
 function LoginPage (): JSX.Element {
   return (
-    <div className="page page--gray page--login">
+    <section className="page page--gray page--login">
       <Helmet>
         <title>Six cities. Please authorize.</title>
       </Helmet>
@@ -40,7 +40,7 @@ function LoginPage (): JSX.Element {
           </section>
         </div>
       </main>
-    </div>
+    </section>
   );
 }
 

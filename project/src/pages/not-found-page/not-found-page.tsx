@@ -3,7 +3,7 @@ import LogoLink from '../../components/logo-link/logo-link';
 
 function NotFoundPage (): JSX.Element {
   return (
-    <div className="page page--gray page--main">
+    <section className="page page--gray page--main">
       <Helmet>
         <title>Six cities. Page not found.</title>
       </Helmet>
@@ -49,7 +49,7 @@ function NotFoundPage (): JSX.Element {
           </div>
         </div>
       </main>
-    </div>
+    </section>
   );
 }
 

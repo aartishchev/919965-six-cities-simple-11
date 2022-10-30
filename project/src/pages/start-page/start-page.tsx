@@ -9,7 +9,7 @@ type StartPageProps = {
 
 function StartPage({ placesFound }: StartPageProps): JSX.Element {
   return (
-    <>
+    <section className="page page--gray page--main">
       <Helmet>
         <title>Six cities. Time to travel!</title>
       </Helmet>
@@ -111,7 +111,7 @@ function StartPage({ placesFound }: StartPageProps): JSX.Element {
           </div>
         </div>
       </main>
-    </>
+    </section>
   );
 }
 
