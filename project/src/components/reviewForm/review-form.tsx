@@ -1,16 +1,16 @@
 import { ChangeEvent, Fragment, useState } from 'react';
 import { ReviewOutgoing } from '../../types/review';
-import { FormInputLength, RatingScores } from '../../const';
+import { ExtremeRatingValue, FormInputLength, RatingScores } from '../../const';
 
 function ReviewForm (): JSX.Element {
   const [reviewPayload, setReviewPayload] = useState<ReviewOutgoing>({
     review: '',
-    rating: 0
+    rating: ExtremeRatingValue.DefaultRating
   });
 
   const handleRatingChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = event.target;
-    setReviewPayload({...reviewPayload, [name]: value });
+    setReviewPayload({ ...reviewPayload, [name]: value });
   };
 
   const isValid = () => {
@@ -34,13 +34,13 @@ function ReviewForm (): JSX.Element {
               className="form__rating-input visually-hidden"
               name="rating"
               value={ score.value }
-              id={`${score.value}-stars`}
+              id={ `${score.value}-stars` }
               type="radio"
               checked={ reviewPayload.rating === score.value }
               onChange={ handleRatingChange }
             />
             <label
-              htmlFor={`${score.value}-stars`}
+              htmlFor={ `${score.value}-stars` }
               className="reviews__rating-label form__rating-label"
               title={ score.title }
             >
@@ -68,7 +68,7 @@ function ReviewForm (): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={ !isValid() }
+          disabled={ !isValid }
         >
           Submit
         </button>

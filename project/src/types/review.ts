@@ -7,9 +7,9 @@ export type ReviewIncoming = {
   id: number;
   rating: number;
   user: User;
-}
+};
 
 export type ReviewOutgoing = {
   review: string;
   rating: typeof RatingScores[number]['value'] | 0;
-}
+};

@@ -6,15 +6,11 @@ import { reviews } from './mocks/reviews';
 import { Setting } from './const';
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement,
+  document.getElementById('root') as HTMLElement
 );
 
 root.render(
   <React.StrictMode>
-    <App
-      placesFound = { Setting.PlacesFound }
-      offers = { offers }
-      reviews = { reviews }
-    />
-  </React.StrictMode>,
+    <App placesFound={Setting.PlacesFound} offers={offers} reviews={reviews} />
+  </React.StrictMode>
 );
