@@ -38,11 +38,7 @@ function Map(props: MapProps): JSX.Element {
         });
 
         marker
-          .setIcon(
-            selectedOffer !== null && offer.id === selectedOffer.id
-              ? currentCustomIcon
-              : defaultCustomIcon
-          )
+          .setIcon(offer.id === selectedOffer?.id ? currentCustomIcon : defaultCustomIcon)
           .addTo(map);
       });
     }
