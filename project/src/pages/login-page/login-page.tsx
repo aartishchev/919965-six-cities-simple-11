@@ -6,7 +6,7 @@ function LoginPage(): JSX.Element {
       <Helmet>
         <title>Six cities. Please authorize.</title>
       </Helmet>
-      <header className="header">
+      {/* <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
@@ -14,7 +14,7 @@ function LoginPage(): JSX.Element {
             </div>
           </div>
         </div>
-      </header>
+      </header> */}
       <main className="page__main page__main--login">
         <div className="page__login-container container">
           <section className="login">

@@ -1,23 +1,27 @@
 import { Dispatch, SetStateAction } from 'react';
 import { Link } from 'react-router-dom';
-import { ExtremeRatingValue } from '../../const';
 import { Offer } from '../../types/offer';
+import Rating from '../rating/rating';
 
 type PlaceItemProps = {
   offer: Offer;
-  setActiveCard: Dispatch<SetStateAction<Offer | null>>;
+  setActiveCard?: Dispatch<SetStateAction<Offer | null>>;
 };
 
 function PlaceItem({ offer, setActiveCard }: PlaceItemProps): JSX.Element {
   const { previewImage, isPremium, price, title, rating, type } = offer;
-  const calculateRating = (offerRating: Offer['rating']) =>
-    Math.round((offerRating / ExtremeRatingValue.MaxRating) * 100);
+
+  const handleCardHover = (value: Offer | null) => {
+    if (setActiveCard) {
+      setActiveCard(value);
+    }
+  };
 
   return (
     <article
       className="cities__card place-card"
-      onMouseEnter={() => setActiveCard(offer)}
-      onMouseLeave={() => setActiveCard(null)}
+      onMouseEnter={() => { handleCardHover(offer); } }
+      onMouseLeave={() => { handleCardHover(null); } }
     >
       {isPremium && (
         <div className="place-card__mark">
@@ -26,15 +30,13 @@ function PlaceItem({ offer, setActiveCard }: PlaceItemProps): JSX.Element {
       )}
 
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <a href="#">
-          <img
-            className="place-card__image"
-            src={previewImage}
-            width="260"
-            height="200"
-            alt="Place image"
-          />
-        </a>
+        <img
+          className="place-card__image"
+          src={previewImage}
+          width="260"
+          height="200"
+          alt="Place"
+        />
       </div>
 
       <div className="place-card__info">
@@ -46,10 +48,15 @@ function PlaceItem({ offer, setActiveCard }: PlaceItemProps): JSX.Element {
         </div>
 
         <div className="place-card__rating rating">
-          <div className="place-card__stars rating__stars">
-            <span style={{ width: `${calculateRating(rating)}%` }} />
-            <span className="visually-hidden">Rating</span>
-          </div>
+          <Rating
+            rating={rating}
+            render={(roundedRating) => (
+              <div className="place-card__stars rating__stars">
+                <span style={{ width: `${roundedRating}%` }} />
+                <span className="visually-hidden">Rating</span>
+              </div>
+            )}
+          />
         </div>
 
         <h2 className="place-card__name">
