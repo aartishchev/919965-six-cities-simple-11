@@ -12,37 +12,20 @@ type StartPageProps = {
   placesFound: number;
   offers: Offer[];
   reviews: ReviewIncoming[];
-}
+};
 
-function App({ placesFound, offers, reviews }: StartPageProps ): JSX.Element {
+function App({ placesFound, offers, reviews }: StartPageProps): JSX.Element {
   return (
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
           <Route
-            path={ AppRoute.Main }
-            element={
-              <StartPage
-                placesFound={ placesFound }
-                offers = { offers }
-              />
-            }
+            path={AppRoute.Main}
+            element={<StartPage placesFound={placesFound} offers={offers} />}
           />
-
-          <Route
-            path={ AppRoute.Room }
-            element={ <PropertyPage /> }
-          />
-
-          <Route
-            path={ AppRoute.Login }
-            element={ <LoginPage /> }
-          />
-
-          <Route
-            path="*"
-            element={ <NotFoundPage /> }
-          />
+          <Route path={AppRoute.Room} element={<PropertyPage />} />
+          <Route path={AppRoute.Login} element={<LoginPage />} />
+          <Route path={AppRoute.Fallback} element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </HelmetProvider>

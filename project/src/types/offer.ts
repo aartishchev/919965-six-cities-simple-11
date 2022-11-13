@@ -1,5 +1,7 @@
-import { Cities, HousingType } from '../const';
+import { HousingType } from '../const';
 import { User } from './user';
+import { City } from './city';
+import { Location } from './location';
 
 export type Offer = {
   id: number;
@@ -17,15 +19,4 @@ export type Offer = {
   location: Location;
   maxAdults: number;
   type: typeof HousingType[number];
-}
-
-type City = {
-  location: Location;
-  name: typeof Cities[number];
-}
-
-type Location = {
-  latitude: number;
-  longitude: number;
-  zoom: number;
-}
+};
