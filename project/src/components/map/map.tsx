@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { Icon, Marker } from 'leaflet';
+import { Icon, Marker, PointTuple } from 'leaflet';
 import { IconSize, PinIcon } from '../../const';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
@@ -12,16 +12,19 @@ type MapProps = {
   selectedOffer: Offer | null;
 };
 
+const iconSize: PointTuple = [IconSize.Width, IconSize.Height];
+const iconAnchor: PointTuple = [IconSize.Width / 2, IconSize.Height];
+
 const defaultCustomIcon = new Icon({
   iconUrl: PinIcon.Default,
-  iconSize: [IconSize.Width, IconSize.Height],
-  iconAnchor: [IconSize.Width / 2, IconSize.Height],
+  iconSize,
+  iconAnchor,
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: PinIcon.Active,
-  iconSize: [30, 40],
-  iconAnchor: [15, 40],
+  iconSize,
+  iconAnchor,
 });
 
 function Map(props: MapProps): JSX.Element {
