@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { Icon, Marker } from 'leaflet';
-import { PinIcon } from '../../const';
+import { IconSize, PinIcon } from '../../const';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
 import useMap from '../../hooks/use-map';
@@ -14,8 +14,8 @@ type MapProps = {
 
 const defaultCustomIcon = new Icon({
   iconUrl: PinIcon.Default,
-  iconSize: [30, 40],
-  iconAnchor: [15, 40],
+  iconSize: [IconSize.Width, IconSize.Height],
+  iconAnchor: [IconSize.Width / 2, IconSize.Height],
 });
 
 const currentCustomIcon = new Icon({

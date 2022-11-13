@@ -72,4 +72,9 @@ export const Setting = {
 export const PinIcon = {
   Default: '/img/pin.svg',
   Active: '/img/pin-active.svg',
-};
+} as const;
+
+export const IconSize = {
+  Width: 30,
+  Height: 40,
+} as const;
