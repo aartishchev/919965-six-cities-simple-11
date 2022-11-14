@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import LogoLink from '../../components/logo-link/logo-link';
+
 function LoginPage(): JSX.Element {
   return (
     <section className="page page--gray page--login">
