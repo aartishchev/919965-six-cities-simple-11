@@ -20,6 +20,8 @@ export const Cities = [
   'Dusseldorf',
 ] as const;
 
+export const DEFAULT_CITY: typeof Cities[number] = 'Paris';
+
 export const HousingType = ['apartment', 'room', 'house', 'hotel'] as const;
 
 export const RatingScores = [
