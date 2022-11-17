@@ -22,7 +22,7 @@ function App({ offers, reviews }: StartPageProps): JSX.Element {
         <ScrollToTop />
         <Routes>
           <Route path={AppRoute.Main} element={<ContentLayout />}>
-            <Route index element={<StartPage offers={offers} />} />
+            <Route index element={<StartPage />} />
             <Route
               path={AppRoute.Room}
               element={<PropertyPage reviews={reviews} offers={offers} />}
