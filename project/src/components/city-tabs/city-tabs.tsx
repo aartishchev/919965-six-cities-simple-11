@@ -1,5 +1,5 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCity, updateOffers } from '../../store/actions';
+import { setCity } from '../../store/actions';
 import { Cities } from '../../const';
 import cn from 'classnames';
 
@@ -9,7 +9,6 @@ function CityTabs(): JSX.Element {
 
   const onChangeCity = (city: typeof Cities[number]) => {
     dispatch(setCity({ targetCity: city }));
-    dispatch(updateOffers());
   };
 
   return (

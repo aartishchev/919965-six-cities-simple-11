@@ -1,10 +1,18 @@
 import { Outlet, useLocation } from 'react-router-dom';
+import { useAppSelector } from '../hooks';
 import { AppRoute } from '../const';
 import LogoLink from '../components/logo-link/logo-link';
+import LoadingScreen from '../pages/loading-screen/loading-screen';
 
 function ContentLayout() {
   const { pathname } = useLocation();
   const isMainPage = pathname === AppRoute.Main;
+  const areOffersLoading = useAppSelector((state) => state.areOffersLoading);
+  const offers = useAppSelector((state) => state.offers);
+
+  if (areOffersLoading && !offers.length) {
+    return <LoadingScreen />;
+  }
 
   return (
     <>
@@ -12,7 +20,7 @@ function ContentLayout() {
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
-              <LogoLink isActive={ isMainPage } />
+              <LogoLink isActive={isMainPage} />
             </div>
             <nav className="header__nav">
               <ul className="header__nav-list">

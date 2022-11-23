@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
+import { useAppSelector } from '../../hooks';
 import { Navigate, useParams } from 'react-router-dom';
-import { Offer } from '../../types/offer';
-import { ReviewIncoming } from '../../types/review';
 import { AppRoute } from '../../const';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
@@ -9,13 +8,10 @@ import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import Rating from '../../components/rating/rating';
 import cn from 'classnames';
+import { reviews } from '../../mocks/reviews';
 
-type PropertyPageProps = {
-  reviews: ReviewIncoming[];
-  offers: Offer[];
-};
-
-function PropertyPage({ reviews, offers }: PropertyPageProps): JSX.Element {
+function PropertyPage(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   const { id: offerId } = useParams();
   const currentOffer = offers.find((offer) => offer.id.toString() === offerId);
 
@@ -37,8 +33,8 @@ function PropertyPage({ reviews, offers }: PropertyPageProps): JSX.Element {
     rating,
   } = currentOffer;
 
-  const imagesWithIndex = images.map((image, index) => ({ image, index }));
-  const goodsWithIndex = goods.map((good, index) => ({ good, index }));
+  const imagesWithIndex = images.map((image, index) => ({ url: image, index }));
+  const goodsWithIndex = goods.map((good, index) => ({ title: good, index }));
   const nearbyOffers = offers.filter((offer) => offer.id !== currentOffer.id);
 
   return (
@@ -55,7 +51,7 @@ function PropertyPage({ reviews, offers }: PropertyPageProps): JSX.Element {
                 <div className="property__image-wrapper" key={image.index}>
                   <img
                     className="property__image"
-                    src={image.image}
+                    src={image.url}
                     alt="Studio"
                   />
                 </div>
@@ -115,7 +111,7 @@ function PropertyPage({ reviews, offers }: PropertyPageProps): JSX.Element {
                 <ul className="property__inside-list">
                   {goodsWithIndex.map((good) => (
                     <li className="property__inside-item" key={good.index}>
-                      {good.good}
+                      {good.title}
                     </li>
                   ))}
                 </ul>

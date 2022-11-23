@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchOffersAction } from '../../store/api-actions';
+import { store } from '../../store';
 import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
@@ -7,12 +9,34 @@ import OptionsForm from '../../components/options-form/options-form';
 import OffersList from '../../components/offers-list/offers-list';
 import CityTabs from '../../components/city-tabs/city-tabs';
 import Map from '../../components/map/map';
+import Loader from '../../components/loader/loader';
 import cn from 'classnames';
 
 function StartPage(): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
   const selectedCity = useAppSelector((state) => state.selectedCity);
-  const offers = useAppSelector((state) => state.offers);
+  const selectedSorting = useAppSelector((state) => state.selectedSorting);
+  const areOffersLoading = useAppSelector((state) => state.areOffersLoading);
+  const offers = useAppSelector((state) =>
+    state.offers
+      .filter(({ city }) => city.name === selectedCity)
+      .sort((a, b) => {
+        switch (state.selectedSorting) {
+          case 'Price: high to low':
+            return b.price - a.price;
+          case 'Price: low to high':
+            return a.price - b.price;
+          case 'Top rated first':
+            return b.rating - a.rating;
+          default:
+            return 0;
+        }
+      })
+  );
+
+  useEffect(() => {
+    store.dispatch(fetchOffersAction());
+  }, [selectedCity, selectedSorting]);
 
   return (
     <>
@@ -40,7 +64,11 @@ function StartPage(): JSX.Element {
 
                 <OptionsForm />
 
-                <OffersList offers={offers} setActiveCard={setActiveCard} />
+                {areOffersLoading ? (
+                  <Loader />
+                ) : (
+                  <OffersList offers={offers} setActiveCard={setActiveCard} />
+                )}
               </section>
               <div className="cities__right-section">
                 <Map
