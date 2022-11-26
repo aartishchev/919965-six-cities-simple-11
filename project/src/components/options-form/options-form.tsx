@@ -1,7 +1,7 @@
 import { SyntheticEvent, useState } from 'react';
 import { SortingOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setSorting, sortOffers } from '../../store/actions';
+import { setSorting } from '../../store/actions';
 import cn from 'classnames';
 
 const indexedOptions = SortingOptions.map((option, index) => ({
@@ -22,7 +22,6 @@ function OptionsForm(): JSX.Element {
           target.innerHTML as unknown as typeof SortingOptions[number],
       })
     );
-    dispatch(sortOffers());
     toggleOptions(!areOptionsActive);
   };
 
