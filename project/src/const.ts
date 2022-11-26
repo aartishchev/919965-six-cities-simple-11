@@ -1,9 +1,9 @@
-export const AppRoute = {
-  Main: '/',
-  Login: '/login',
-  Room: '/offer/:id',
-  Fallback: '*',
-} as const;
+export enum AppRoute {
+  Main = '/',
+  Login = '/login',
+  Room = '/offer/:id',
+  Fallback = '*',
+}
 
 export enum AuthorizationStatus {
   Auth = 'AUTH',

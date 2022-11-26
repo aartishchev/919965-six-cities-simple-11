@@ -3,7 +3,7 @@ import { AppRoute } from '../../const';
 import cn from 'classnames';
 
 type LogoLinkProps = {
-  isActive: boolean;
+  isActive?: boolean;
 }
 
 function LogoLink({ isActive }: LogoLinkProps): JSX.Element {

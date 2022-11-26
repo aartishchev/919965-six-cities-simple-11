@@ -1,4 +1,4 @@
-import { SyntheticEvent, useState } from 'react';
+import { useState } from 'react';
 import { SortingOptions } from '../../const';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setSorting } from '../../store/actions';
@@ -14,14 +14,8 @@ function OptionsForm(): JSX.Element {
   const selectedSorting = useAppSelector((state) => state.selectedSorting);
   const dispatch = useAppDispatch();
 
-  const handleSortingChange = (event: SyntheticEvent) => {
-    const target = event.target as HTMLElement;
-    dispatch(
-      setSorting({
-        targetSorting:
-          target.innerHTML as unknown as typeof SortingOptions[number],
-      })
-    );
+  const handleSortingChange = (option: typeof SortingOptions[number]) => {
+    dispatch(setSorting({ targetSorting: option }));
     toggleOptions(!areOptionsActive);
   };
 
@@ -43,10 +37,12 @@ function OptionsForm(): JSX.Element {
             const isActive = option.title === selectedSorting;
             return (
               <li
-                className={cn('places__option', {'places__option--active': isActive})}
+                className={cn('places__option', {
+                  'places__option--active': isActive,
+                })}
                 tabIndex={0}
                 key={option.index}
-                onClick={(event) => handleSortingChange(event)}
+                onClick={() => handleSortingChange(option.title)}
               >
                 {option.title}
               </li>

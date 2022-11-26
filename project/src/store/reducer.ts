@@ -1,10 +1,13 @@
 import { createReducer } from '@reduxjs/toolkit';
+import { UserData } from '../types/user-data';
+import { Offer } from '../types/offer';
 import {
   setCity,
   setSorting,
-  requireAuthorization,
+  setAuthorizationStatus,
   setOffersLoadingStatus,
   setOffers,
+  setUserData
 } from './actions';
 import {
   AuthorizationStatus,
@@ -13,7 +16,6 @@ import {
   DEFAULT_SORTING,
   SortingOptions,
 } from '../const';
-import { Offer } from '../types/offer';
 
 type InitialState = {
   offers: Offer[];
@@ -22,6 +24,7 @@ type InitialState = {
   authorizationStatus: AuthorizationStatus;
   areOffersLoading: boolean;
   error: string | null;
+  userData: UserData;
 };
 
 const initialState: InitialState = {
@@ -31,6 +34,14 @@ const initialState: InitialState = {
   authorizationStatus: AuthorizationStatus.Unknown,
   areOffersLoading: false,
   error: null,
+  userData: {
+    avatarUrl: '',
+    email: '',
+    id: 1,
+    isPro: false,
+    name: '',
+    token: ''
+  },
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -49,8 +60,11 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setOffersLoadingStatus, (state, action) => {
       state.areOffersLoading = action.payload;
     })
-    .addCase(requireAuthorization, (state, action) => {
+    .addCase(setAuthorizationStatus, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setUserData, (state, action) => {
+      state.userData = action.payload;
     });
 });
 
