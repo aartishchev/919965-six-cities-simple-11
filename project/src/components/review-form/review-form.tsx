@@ -1,8 +1,15 @@
-import { ChangeEvent, Fragment, useState } from 'react';
+import { ChangeEvent, FormEvent, Fragment, useState } from 'react';
+import { sendReviewAction } from '../../store/api-actions';
 import { ReviewOutgoing } from '../../types/review';
+import { useAppDispatch } from '../../hooks';
+import { Offer } from '../../types/offer';
 import { ExtremeRatingValue, FormInputLength, RatingScores } from '../../const';
 
-function ReviewForm(): JSX.Element {
+type ReviewFormProps = {
+  targetId: Offer['id'];
+};
+
+function ReviewForm({ targetId }: ReviewFormProps): JSX.Element {
   const [reviewPayload, setReviewPayload] = useState<ReviewOutgoing>({
     review: '',
     rating: ExtremeRatingValue.DefaultRating,
@@ -23,8 +30,26 @@ function ReviewForm(): JSX.Element {
     return isTextValid && isRated;
   };
 
+  const dispatch = useAppDispatch();
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const payload = {
+      ...reviewPayload,
+      targetId,
+    };
+    dispatch(sendReviewAction(payload));
+    setReviewPayload({ review: '', rating: ExtremeRatingValue.DefaultRating });
+  };
+
   return (
-    <form className="reviews__form form" action="#" method="post">
+    <form
+      className="reviews__form form"
+      action="#"
+      method="post"
+      onSubmit={handleSubmit}
+    >
       <label className="reviews__label form__label" htmlFor="review">
         Your review
       </label>
@@ -38,7 +63,7 @@ function ReviewForm(): JSX.Element {
               value={score.value}
               id={`${score.value}-stars`}
               type="radio"
-              checked={reviewPayload.rating === score.value}
+              checked={reviewPayload.rating.toString() === score.value.toString()}
               onChange={handleRatingChange}
             />
             <label

@@ -4,10 +4,10 @@ import LoadingScreen from '../pages/loading-screen/loading-screen';
 import AppHeader from '../components/app-header/app-header';
 
 function ContentLayout() {
-  const areOffersLoading = useAppSelector((state) => state.areOffersLoading);
+  const isDataLoading = useAppSelector((state) => state.isDataLoading);
   const offers = useAppSelector((state) => state.offers);
 
-  if (areOffersLoading && !offers.length) {
+  if (isDataLoading && !offers.length) {
     return <LoadingScreen />;
   }
 

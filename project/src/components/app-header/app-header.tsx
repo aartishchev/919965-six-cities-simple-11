@@ -9,7 +9,7 @@ import LogoLink from '../../components/logo-link/logo-link';
 function AppHeader() {
   const { pathname } = useLocation();
   const isMainPage = pathname === AppRoute.Main;
-  const { avatarUrl, email } = useAppSelector((state) => state.userData);
+  const currentUser = useAppSelector((state) => state.userData);
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -34,9 +34,9 @@ function AppHeader() {
                   <div className="header__nav-profile">
                     <div
                       className="header__avatar-wrapper user__avatar-wrapper"
-                      style={{ backgroundImage: `url(${avatarUrl})` }}
+                      style={{ backgroundImage: `url(${currentUser?.avatarUrl || '' })` }}
                     />
-                    <span className="header__user-name user__name">{email}</span>
+                    <span className="header__user-name user__name">{currentUser?.email}</span>
                   </div>
                 </li>
                 <li className="header__nav-item">

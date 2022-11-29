@@ -1,13 +1,17 @@
 import { createReducer } from '@reduxjs/toolkit';
 import { UserData } from '../types/user-data';
 import { Offer } from '../types/offer';
+import { ReviewIncoming } from '../types/review';
 import {
   setCity,
   setSorting,
   setAuthorizationStatus,
-  setOffersLoadingStatus,
+  setDataLoadingStatus,
   setOffers,
-  setUserData
+  setUserData,
+  setTargetOffer,
+  setNearbyOffers,
+  setReviewsIncoming
 } from './actions';
 import {
   AuthorizationStatus,
@@ -22,9 +26,11 @@ type InitialState = {
   selectedCity: typeof Cities[number];
   selectedSorting: typeof SortingOptions[number];
   authorizationStatus: AuthorizationStatus;
-  areOffersLoading: boolean;
-  error: string | null;
-  userData: UserData;
+  isDataLoading: boolean;
+  userData: UserData | null;
+  targetOffer: Offer | null;
+  nearbyOffers: Offer[];
+  reviewsIncoming: ReviewIncoming[];
 };
 
 const initialState: InitialState = {
@@ -32,16 +38,11 @@ const initialState: InitialState = {
   selectedCity: DEFAULT_CITY,
   selectedSorting: DEFAULT_SORTING,
   authorizationStatus: AuthorizationStatus.Unknown,
-  areOffersLoading: false,
-  error: null,
-  userData: {
-    avatarUrl: '',
-    email: '',
-    id: 1,
-    isPro: false,
-    name: '',
-    token: ''
-  },
+  isDataLoading: false,
+  userData: null,
+  targetOffer: null,
+  nearbyOffers: [],
+  reviewsIncoming: [],
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -57,14 +58,23 @@ const reducer = createReducer(initialState, (builder) => {
       const { targetSorting } = action.payload;
       state.selectedSorting = targetSorting;
     })
-    .addCase(setOffersLoadingStatus, (state, action) => {
-      state.areOffersLoading = action.payload;
+    .addCase(setDataLoadingStatus, (state, action) => {
+      state.isDataLoading = action.payload;
     })
     .addCase(setAuthorizationStatus, (state, action) => {
       state.authorizationStatus = action.payload;
     })
     .addCase(setUserData, (state, action) => {
       state.userData = action.payload;
+    })
+    .addCase(setTargetOffer, (state, action) => {
+      state.targetOffer = action.payload;
+    })
+    .addCase(setNearbyOffers, (state, action) => {
+      state.nearbyOffers = action.payload;
+    })
+    .addCase(setReviewsIncoming, (state, action) => {
+      state.reviewsIncoming = action.payload;
     });
 });
 

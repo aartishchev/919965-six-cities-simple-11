@@ -1,21 +1,34 @@
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { Navigate, useParams } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute, AuthorizationStatus } from '../../const';
+import { fetchTargetOfferAction } from '../../store/api-actions';
 import ReviewForm from '../../components/review-form/review-form';
 import ReviewsList from '../../components/reviews-list/reviews-list';
 import OffersList from '../../components/offers-list/offers-list';
 import Map from '../../components/map/map';
 import Rating from '../../components/rating/rating';
 import cn from 'classnames';
-import { reviews } from '../../mocks/reviews';
 
 function PropertyPage(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
   const { id: offerId } = useParams();
-  const currentOffer = offers.find((offer) => offer.id.toString() === offerId);
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const nearbyOffers = useAppSelector((state) => state.nearbyOffers);
+  const targetOffer = useAppSelector((state) => state.targetOffer);
+  const reviewsIncoming = useAppSelector((state) =>
+    state.reviewsIncoming.slice(0, 10)
+  );
 
-  if (!currentOffer) {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (offerId) {
+      dispatch(fetchTargetOfferAction(Number(offerId)));
+    }
+  }, []);
+
+  if (!targetOffer || !nearbyOffers || !reviewsIncoming) {
     return <Navigate to={AppRoute.Fallback} />;
   }
 
@@ -31,11 +44,10 @@ function PropertyPage(): JSX.Element {
     title,
     type,
     rating,
-  } = currentOffer;
+  } = targetOffer;
 
   const imagesWithIndex = images.map((image, index) => ({ url: image, index }));
   const goodsWithIndex = goods.map((good, index) => ({ title: good, index }));
-  const nearbyOffers = offers.filter((offer) => offer.id !== currentOffer.id);
 
   return (
     <>
@@ -47,7 +59,7 @@ function PropertyPage(): JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {imagesWithIndex.map((image) => (
+              {imagesWithIndex.slice(0, 6).map((image) => (
                 <div className="property__image-wrapper" key={image.index}>
                   <img
                     className="property__image"
@@ -149,18 +161,24 @@ function PropertyPage(): JSX.Element {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">
                   Reviews &middot;{' '}
-                  <span className="reviews__amount">{reviews.length}</span>
+                  <span className="reviews__amount">
+                    {reviewsIncoming.length}
+                  </span>
                 </h2>
-                <ReviewsList reviews={reviews} />
-                <ReviewForm />
+
+                <ReviewsList reviews={reviewsIncoming} />
+
+                {authorizationStatus === AuthorizationStatus.Auth ? (
+                  <ReviewForm targetId={targetOffer.id} />
+                ) : null}
               </section>
             </div>
           </div>
 
           <Map
-            city={currentOffer.city}
-            offers={offers}
-            selectedOffer={currentOffer}
+            city={targetOffer.city}
+            offers={nearbyOffers}
+            selectedOffer={targetOffer}
             classList={'property__map map'}
           />
         </section>
