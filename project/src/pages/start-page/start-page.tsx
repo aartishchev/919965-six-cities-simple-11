@@ -16,7 +16,7 @@ function StartPage(): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
   const selectedCity = useAppSelector((state) => state.selectedCity);
   const selectedSorting = useAppSelector((state) => state.selectedSorting);
-  const areOffersLoading = useAppSelector((state) => state.areOffersLoading);
+  const isDataLoading = useAppSelector((state) => state.isDataLoading);
   const offers = useAppSelector((state) =>
     state.offers
       .filter(({ city }) => city.name === selectedCity)
@@ -64,7 +64,7 @@ function StartPage(): JSX.Element {
 
                 <OptionsForm />
 
-                {areOffersLoading ? (
+                {isDataLoading ? (
                   <Loader />
                 ) : (
                   <OffersList offers={offers} setActiveCard={setActiveCard} />

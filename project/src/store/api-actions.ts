@@ -4,14 +4,18 @@ import { AppDispatch, State } from '../types/state.js';
 import { saveToken, dropToken } from '../services/token';
 import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
+import { ReviewIncoming, ReviewOutgoing } from '../types/review.js';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
 import {
   setOffers,
   setAuthorizationStatus,
-  setOffersLoadingStatus,
+  setDataLoadingStatus,
   redirectToRoute,
   setUserData,
+  setNearbyOffers,
+  setTargetOffer,
+  setReviewsIncoming,
 } from './actions';
 
 export const fetchOffersAction = createAsyncThunk<
@@ -23,10 +27,31 @@ export const fetchOffersAction = createAsyncThunk<
     extra: AxiosInstance;
   }
 >('data/fetchOffers', async (_arg, { dispatch, extra: api }) => {
-  dispatch(setOffersLoadingStatus(true));
+  dispatch(setDataLoadingStatus(true));
   const { data } = await api.get<Offer[]>(APIRoute.Offers);
   dispatch(setOffers(data));
-  dispatch(setOffersLoadingStatus(false));
+  dispatch(setDataLoadingStatus(false));
+});
+
+export const fetchTargetOfferAction = createAsyncThunk<
+  void,
+  Offer['id'],
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>('data/fetchTargetOffer', async (hotelId, { dispatch, extra: api }) => {
+  dispatch(setDataLoadingStatus(true));
+  const [offer, nearby, comments] = await Promise.all([
+    api.get<Offer>(`${APIRoute.Offers}/${hotelId}`),
+    api.get<Offer[]>(`${APIRoute.Offers}/${hotelId}/nearby`),
+    api.get<ReviewIncoming[]>(`${APIRoute.Comments}/${hotelId}`),
+  ]);
+  dispatch(setTargetOffer(offer.data));
+  dispatch(setNearbyOffers(nearby.data));
+  dispatch(setReviewsIncoming(comments.data));
+  dispatch(setDataLoadingStatus(false));
 });
 
 export const checkAuthAction = createAsyncThunk<
@@ -79,3 +104,29 @@ export const logoutAction = createAsyncThunk<
   dropToken();
   dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
 });
+
+export const sendReviewAction = createAsyncThunk<
+  void,
+  {
+    targetId: Offer['id'];
+    review: ReviewOutgoing['review'];
+    rating: ReviewOutgoing['rating'];
+  },
+  {
+    dispatch: AppDispatch;
+    state: State;
+    extra: AxiosInstance;
+  }
+>(
+  'data/sendReview',
+  async (
+    { review: comment, rating, targetId: hotelId },
+    { dispatch, extra: api }
+  ) => {
+    const { data } = await api.post<ReviewIncoming[]>(
+      `${APIRoute.Comments}/${hotelId}`,
+      { comment, rating }
+    );
+    dispatch(setReviewsIncoming(data));
+  }
+);
