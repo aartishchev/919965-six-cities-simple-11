@@ -22,8 +22,8 @@ function ReviewForm({ targetId }: ReviewFormProps): JSX.Element {
 
   const isValid = () => {
     const isTextValid =
-      reviewPayload.review?.length > FormInputLength.MinLength &&
-      reviewPayload.review?.length < FormInputLength.MaxLength;
+      reviewPayload.review.length > FormInputLength.MinLength &&
+      reviewPayload.review.length < FormInputLength.MaxLength;
 
     const isRated = reviewPayload.rating > 0;
 
@@ -63,9 +63,7 @@ function ReviewForm({ targetId }: ReviewFormProps): JSX.Element {
               value={score.value}
               id={`${score.value}-stars`}
               type="radio"
-              checked={
-                reviewPayload.rating.toString() === score.value.toString()
-              }
+              checked={reviewPayload.rating.toString() === score.value.toString()}
               onChange={handleRatingChange}
             />
             <label
