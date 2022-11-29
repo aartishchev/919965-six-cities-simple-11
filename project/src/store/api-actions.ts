@@ -1,12 +1,18 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AppDispatch, State } from '../types/state.js';
-import { setOffers, requireAuthorization, setOffersLoadingStatus } from './actions';
 import { saveToken, dropToken } from '../services/token';
-import { APIRoute, AuthorizationStatus } from '../const';
+import { APIRoute, AppRoute, AuthorizationStatus } from '../const';
 import { Offer } from '../types/offer';
 import { AuthData } from '../types/auth-data';
 import { UserData } from '../types/user-data';
+import {
+  setOffers,
+  setAuthorizationStatus,
+  setOffersLoadingStatus,
+  redirectToRoute,
+  setUserData,
+} from './actions';
 
 export const fetchOffersAction = createAsyncThunk<
   void,
@@ -33,10 +39,11 @@ export const checkAuthAction = createAsyncThunk<
   }
 >('user/checkAuth', async (_arg, { dispatch, extra: api }) => {
   try {
-    await api.get(APIRoute.Login);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    const { data } = await api.get<UserData>(APIRoute.Login);
+    dispatch(setUserData(data));
+    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
   } catch {
-    dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+    dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
   }
 });
 
@@ -51,11 +58,11 @@ export const loginAction = createAsyncThunk<
 >(
   'user/login',
   async ({ login: email, password }, { dispatch, extra: api }) => {
-    const {
-      data: { token },
-    } = await api.post<UserData>(APIRoute.Login, { email, password });
-    saveToken(token);
-    dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    const { data } = await api.post<UserData>(APIRoute.Login, { email, password });
+    saveToken(data.token);
+    dispatch(setUserData(data));
+    dispatch(setAuthorizationStatus(AuthorizationStatus.Auth));
+    dispatch(redirectToRoute(AppRoute.Main));
   }
 );
 
@@ -70,5 +77,5 @@ export const logoutAction = createAsyncThunk<
 >('user/logout', async (_arg, { dispatch, extra: api }) => {
   await api.delete(APIRoute.Logout);
   dropToken();
-  dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+  dispatch(setAuthorizationStatus(AuthorizationStatus.NoAuth));
 });

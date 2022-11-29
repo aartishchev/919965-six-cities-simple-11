@@ -1,4 +1,4 @@
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { AppRoute } from '../../const';
 import LoginPage from '../../pages/login-page/login-page';
@@ -7,24 +7,23 @@ import PropertyPage from '../../pages/property-page/property-page';
 import StartPage from '../../pages/start-page/start-page';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import ContentLayout from '../../layouts/content-layout';
+import HistoryRouter from '../history-route/history-route';
+import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {
   return (
     <HelmetProvider>
-      <BrowserRouter>
+      <HistoryRouter history={browserHistory}>
         <ScrollToTop />
         <Routes>
+          <Route path={AppRoute.Login} element={<LoginPage />} />
           <Route path={AppRoute.Main} element={<ContentLayout />}>
             <Route index element={<StartPage />} />
-            <Route
-              path={AppRoute.Room}
-              element={<PropertyPage />}
-            />
-            <Route path={AppRoute.Login} element={<LoginPage />} />
+            <Route path={AppRoute.Room} element={<PropertyPage />} />
             <Route path={AppRoute.Fallback} element={<NotFoundPage />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </HistoryRouter>
     </HelmetProvider>
   );
 }

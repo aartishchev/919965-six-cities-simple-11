@@ -27,7 +27,7 @@ function CityTabs(): JSX.Element {
                   className={cn('locations__item-link tabs__item', {
                     'tabs__item--active': isActive,
                   })}
-                  href="#"
+                  href="/#"
                 >
                   <span>{city}</span>
                 </a>
