@@ -1,24 +1,24 @@
-import { useLocation, useNavigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../const';
-import { useAppDispatch, useAppSelector } from '../../hooks';
 import { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getAuthorizationStatus, getUserData } from '../../store/user-process/user-process-selectors';
 import { checkAuthAction, logoutAction } from '../../store/api-actions';
-import { store } from '../../store';
+import { AppRoute, AuthorizationStatus } from '../../const';
 import LogoLink from '../../components/logo-link/logo-link';
 
 function AppHeader() {
   const { pathname } = useLocation();
   const isMainPage = pathname === AppRoute.Main;
-  const currentUser = useAppSelector((state) => state.userData);
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const currentUser = useAppSelector(getUserData);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Unknown) {
-      store.dispatch(checkAuthAction());
+      dispatch(checkAuthAction());
     }
-  }, [authorizationStatus]);
+  }, [authorizationStatus, dispatch]);
 
   return (
     <header className="header">
@@ -63,7 +63,7 @@ function AppHeader() {
                       navigate(AppRoute.Login);
                     }}
                   >
-                    <div className="header__avatar-wrapper user__avatar-wrapper"></div>
+                    <div className="header__avatar-wrapper user__avatar-wrapper" />
                     <span className="header__login">Sign in</span>
                   </a>
                 </li>

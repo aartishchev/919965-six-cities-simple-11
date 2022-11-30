@@ -1,19 +1,19 @@
-import { Dispatch, SetStateAction } from 'react';
+import { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
 import Rating from '../rating/rating';
 
 type PlaceItemProps = {
   offer: Offer;
-  setActiveCard?: Dispatch<SetStateAction<Offer | null>>;
+  handleCardMouseOver?: (offer: Offer | null) => void;
 };
 
-function PlaceItem({ offer, setActiveCard }: PlaceItemProps): JSX.Element {
+function PlaceItem({ offer, handleCardMouseOver }: PlaceItemProps): JSX.Element {
   const { previewImage, isPremium, price, title, rating, type } = offer;
 
   const handleCardHover = (value: Offer | null) => {
-    if (setActiveCard) {
-      setActiveCard(value);
+    if (handleCardMouseOver) {
+      handleCardMouseOver(value);
     }
   };
 
@@ -71,4 +71,4 @@ function PlaceItem({ offer, setActiveCard }: PlaceItemProps): JSX.Element {
   );
 }
 
-export default PlaceItem;
+export default memo(PlaceItem);

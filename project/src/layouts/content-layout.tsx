@@ -1,15 +1,14 @@
+import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
-import { useAppSelector } from '../hooks';
-import LoadingScreen from '../pages/loading-screen/loading-screen';
+import { useAppDispatch } from '../hooks';
+import { fetchOffersAction } from '../store/api-actions';
 import AppHeader from '../components/app-header/app-header';
 
 function ContentLayout() {
-  const isDataLoading = useAppSelector((state) => state.isDataLoading);
-  const offers = useAppSelector((state) => state.offers);
-
-  if (isDataLoading && !offers.length) {
-    return <LoadingScreen />;
-  }
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchOffersAction());
+  }, [dispatch]);
 
   return (
     <>
