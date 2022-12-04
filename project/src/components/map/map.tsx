@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { Icon, Marker, PointTuple } from 'leaflet';
+import { memo, useEffect, useRef, useState } from 'react';
+import { Icon, LayerGroup, Marker, PointTuple } from 'leaflet';
 import { IconSize, PinIcon } from '../../const';
 import { City } from '../../types/city';
 import { Offer } from '../../types/offer';
@@ -32,23 +32,36 @@ function Map(props: MapProps): JSX.Element {
   const { city, offers, selectedOffer, classList } = props;
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
+  const [currentCity, setCurrentCity] = useState<City['name']>(city.name);
 
   useEffect(() => {
     if (map) {
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude,
-        });
+      if (currentCity !== city.name) {
+        map.flyTo(
+          [city.location.latitude, city.location.longitude],
+          city.location.zoom,
+          { animate: true, duration: 1 }
+        );
+        setCurrentCity(city.name);
+      }
 
-        marker
-          .setIcon(offer.id === selectedOffer?.id ? currentCustomIcon : defaultCustomIcon)
-          .addTo(map);
-      });
+      const markers = offers.map((offer) => new Marker({
+        lat: offer.location.latitude,
+        lng: offer.location.longitude,
+      }, {
+        icon: offer.id === selectedOffer?.id ? currentCustomIcon : defaultCustomIcon
+      }));
+
+      const markersLayer = new LayerGroup(markers);
+      markersLayer.addTo(map);
+
+      return () => {
+        map.removeLayer(markersLayer);
+      };
     }
-  }, [map, offers, selectedOffer]);
+  }, [selectedOffer, city]);
 
   return <section className={classList} ref={mapRef} />;
 }
 
-export default Map;
+export default memo(Map);

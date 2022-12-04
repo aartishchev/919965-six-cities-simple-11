@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import { fetchOffersAction } from '../../store/api-actions';
-import { store } from '../../store';
+import { useCallback, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAppSelector } from '../../hooks';
 import { Offer } from '../../types/offer';
@@ -11,17 +9,30 @@ import CityTabs from '../../components/city-tabs/city-tabs';
 import Map from '../../components/map/map';
 import Loader from '../../components/loader/loader';
 import cn from 'classnames';
+import {
+  getSelectedCity,
+  getSelectedSorting,
+} from '../../store/offers-process/offers-process-selectors';
+import {
+  getDataLoadingStatus,
+  getOffers,
+} from '../../store/offers-data/offers-data-selectors';
 
 function StartPage(): JSX.Element {
   const [activeCard, setActiveCard] = useState<Offer | null>(null);
-  const selectedCity = useAppSelector((state) => state.selectedCity);
-  const selectedSorting = useAppSelector((state) => state.selectedSorting);
-  const isDataLoading = useAppSelector((state) => state.isDataLoading);
-  const offers = useAppSelector((state) =>
-    state.offers
-      .filter(({ city }) => city.name === selectedCity)
-      .sort((a, b) => {
-        switch (state.selectedSorting) {
+  const selectedCity = useAppSelector(getSelectedCity);
+  const selectedSorting = useAppSelector(getSelectedSorting);
+  const isDataLoading = useAppSelector(getDataLoadingStatus);
+  const offers = useAppSelector(getOffers);
+  const filteredOffers = useMemo(
+    () => offers.filter(({ city }) => city.name === selectedCity),
+    [offers, selectedCity]
+  );
+
+  const sortedOffers = useMemo(
+    () =>
+      filteredOffers.sort((a, b) => {
+        switch (selectedSorting) {
           case 'Price: high to low':
             return b.price - a.price;
           case 'Price: low to high':
@@ -31,12 +42,17 @@ function StartPage(): JSX.Element {
           default:
             return 0;
         }
-      })
+      }),
+    [filteredOffers, selectedSorting]
   );
 
-  useEffect(() => {
-    store.dispatch(fetchOffersAction());
-  }, [selectedCity, selectedSorting]);
+  const handleCardMouseOver = useCallback((offer: Offer | null) => {
+    setActiveCard(offer);
+  }, []);
+
+  if (isDataLoading) {
+    return <Loader />;
+  }
 
   return (
     <>
@@ -67,13 +83,16 @@ function StartPage(): JSX.Element {
                 {isDataLoading ? (
                   <Loader />
                 ) : (
-                  <OffersList offers={offers} setActiveCard={setActiveCard} />
+                  <OffersList
+                    offers={sortedOffers}
+                    handleCardMouseOver={handleCardMouseOver}
+                  />
                 )}
               </section>
               <div className="cities__right-section">
                 <Map
-                  city={offers[0].city}
-                  offers={offers}
+                  city={filteredOffers[0].city}
+                  offers={filteredOffers}
                   selectedOffer={activeCard}
                   classList={'cities__map map'}
                 />

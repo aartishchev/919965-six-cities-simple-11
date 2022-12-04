@@ -1,7 +1,8 @@
-import { useState } from 'react';
-import { SortingOptions } from '../../const';
+import { memo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setSorting } from '../../store/actions';
+import { setSorting } from '../../store/offers-process/offers-process';
+import { getSelectedSorting } from '../../store/offers-process/offers-process-selectors';
+import { SortingOptions } from '../../const';
 import cn from 'classnames';
 
 const indexedOptions = SortingOptions.map((option, index) => ({
@@ -11,7 +12,7 @@ const indexedOptions = SortingOptions.map((option, index) => ({
 
 function OptionsForm(): JSX.Element {
   const [areOptionsActive, toggleOptions] = useState<boolean>(false);
-  const selectedSorting = useAppSelector((state) => state.selectedSorting);
+  const selectedSorting = useAppSelector(getSelectedSorting);
   const dispatch = useAppDispatch();
 
   const handleSortingChange = (option: typeof SortingOptions[number]) => {
@@ -57,4 +58,4 @@ function OptionsForm(): JSX.Element {
   );
 }
 
-export default OptionsForm;
+export default memo(OptionsForm);

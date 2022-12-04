@@ -35,11 +35,7 @@ function ReviewForm({ targetId }: ReviewFormProps): JSX.Element {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const payload = {
-      ...reviewPayload,
-      targetId,
-    };
-    dispatch(sendReviewAction(payload));
+    dispatch(sendReviewAction({ ...reviewPayload, targetId }));
     setReviewPayload({ review: '', rating: ExtremeRatingValue.DefaultRating });
   };
 
@@ -86,6 +82,7 @@ function ReviewForm({ targetId }: ReviewFormProps): JSX.Element {
         placeholder="Tell how was your stay, what you like and what can be improved"
         maxLength={FormInputLength.MaxLength}
         onChange={handleRatingChange}
+        value={reviewPayload.review}
       />
 
       <div className="reviews__button-wrapper">

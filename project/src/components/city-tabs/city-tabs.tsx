@@ -1,10 +1,12 @@
+import { memo } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { setCity } from '../../store/actions';
+import { setCity } from '../../store/offers-process/offers-process';
+import { getSelectedCity } from '../../store/offers-process/offers-process-selectors';
 import { Cities } from '../../const';
 import cn from 'classnames';
 
 function CityTabs(): JSX.Element {
-  const selectedCity = useAppSelector((state) => state.selectedCity);
+  const selectedCity = useAppSelector(getSelectedCity);
   const dispatch = useAppDispatch();
 
   const onChangeCity = (city: typeof Cities[number]) => {
@@ -40,4 +42,4 @@ function CityTabs(): JSX.Element {
   );
 }
 
-export default CityTabs;
+export default memo(CityTabs);
