@@ -11,10 +11,10 @@ function ContentLayout() {
   }, [dispatch]);
 
   return (
-    <>
+    <section className="page page--gray page--main">
       <AppHeader />
       <Outlet />
-    </>
+    </section>
   );
 }
 

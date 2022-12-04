@@ -61,7 +61,7 @@ function StartPage(): JSX.Element {
       </Helmet>
 
       <main
-        className={cn('page__main page__main--index ', {
+        className={cn('page__main page__main--index', {
           'page__main--index-empty': !offers.length,
         })}
       >
@@ -99,7 +99,7 @@ function StartPage(): JSX.Element {
               </div>
             </div>
           ) : (
-            <EmptyList />
+            <EmptyList selectedCity={selectedCity} />
           )}
         </div>
       </main>
