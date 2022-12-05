@@ -1,52 +1,59 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setCity } from '../../store/offers-process/offers-process';
 import { getAuthorizationStatus } from '../../store/user-process/user-process-selectors';
-import { loginAction } from '../../store/api-actions';
+import { checkAuthAction, loginAction } from '../../store/api-actions';
 import { AuthData } from '../../types/auth-data';
 import { redirectToRoute } from '../../store/actions';
 import { AppRoute, AuthorizationStatus, Cities } from '../../const';
 import LogoLink from '../../components/logo-link/logo-link';
 
-const VALIDATION_REG_EXP = /^(?=.*?[A-Za-z])(?=.*?[0-9]).{2,}$/;
+const EMAIL_VALIDATION_REG_EX = /^[a-z0-9]+@[a-z]+\.[a-z]{2,3}$/;
+const PASSWORD_VALIDATION_REG_EX = /^(?=.*?[A-Za-z])(?=.*?[0-9]).{2,}$/;
 
 function LoginPage(): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const loginRef = useRef<HTMLInputElement | null>(null);
-  const [passwordPayload, setPasswordPayload] = useState('');
-  const handlePasswordChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setPasswordPayload(event.target.value);
+
+  const [authPayload, setAuthPayload] = useState<AuthData>({
+    email: '',
+    password: '',
+  });
+
+  const handleAuthDataChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setAuthPayload({ ...authPayload, [name]: value });
   };
 
   const dispatch = useAppDispatch();
+
+  const isValid = () => {
+    const isLoginValid = EMAIL_VALIDATION_REG_EX.test(authPayload.email);
+    const isPasswordValid = PASSWORD_VALIDATION_REG_EX.test(authPayload.password);
+
+    return isLoginValid && isPasswordValid;
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    dispatch(loginAction(authPayload));
+  };
+
+  useEffect(() => {
+    if (authorizationStatus === AuthorizationStatus.Unknown) {
+      dispatch(checkAuthAction());
+    }
+
+    if (authorizationStatus === AuthorizationStatus.Auth) {
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+  }, [authorizationStatus, dispatch]);
 
   const randomCity = Cities[Math.floor(Math.random() * Cities.length)];
   const onCityClick = () => {
     dispatch(setCity({ targetCity: randomCity }));
     dispatch(redirectToRoute(AppRoute.Main));
   };
-
-  const isValid = () => VALIDATION_REG_EXP.test(passwordPayload);
-  const onSubmit = (authData: AuthData) => {
-    dispatch(loginAction(authData));
-  };
-
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (loginRef.current !== null) {
-      onSubmit({
-        login: loginRef.current.value,
-        password: passwordPayload,
-      });
-    }
-  };
-
-  if (authorizationStatus === AuthorizationStatus.Auth) {
-    return <Navigate to={AppRoute.Main} />;
-  }
 
   return (
     <section className="page page--gray page--login">
@@ -72,17 +79,17 @@ function LoginPage(): JSX.Element {
               className="login__form form"
               action="#"
               method="post"
-              autoComplete="off"
+              autoComplete="new-password"
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
                 <input
-                  ref={loginRef}
                   className="login__input form__input"
                   type="email"
                   name="email"
                   placeholder="Email"
+                  onChange={handleAuthDataChange}
                   required
                 />
               </div>
@@ -93,7 +100,7 @@ function LoginPage(): JSX.Element {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  onChange={handlePasswordChange}
+                  onChange={handleAuthDataChange}
                   required
                 />
               </div>
