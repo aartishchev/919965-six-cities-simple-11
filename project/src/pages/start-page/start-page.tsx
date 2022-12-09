@@ -80,14 +80,11 @@ function StartPage(): JSX.Element {
 
                 <OptionsForm />
 
-                {isDataLoading ? (
-                  <Loader />
-                ) : (
-                  <OffersList
-                    offers={sortedOffers}
-                    handleCardMouseOver={handleCardMouseOver}
-                  />
-                )}
+                <OffersList
+                  offers={sortedOffers}
+                  handleCardMouseOver={handleCardMouseOver}
+                />
+
               </section>
               <div className="cities__right-section">
                 <Map
