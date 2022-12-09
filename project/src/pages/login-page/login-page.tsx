@@ -28,10 +28,10 @@ function LoginPage(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const isValid = () => {
-    const isLoginValid = EMAIL_VALIDATION_REG_EX.test(authPayload.email);
+    const isEmailValid = EMAIL_VALIDATION_REG_EX.test(authPayload.email);
     const isPasswordValid = PASSWORD_VALIDATION_REG_EX.test(authPayload.password);
 
-    return isLoginValid && isPasswordValid;
+    return isEmailValid && isPasswordValid;
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -79,7 +79,6 @@ function LoginPage(): JSX.Element {
               className="login__form form"
               action="#"
               method="post"
-              autoComplete="new-password"
               onSubmit={handleSubmit}
             >
               <div className="login__input-wrapper form__input-wrapper">
