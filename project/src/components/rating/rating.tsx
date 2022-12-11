@@ -7,7 +7,7 @@ type RatingProps = {
 };
 
 function Rating({rating, render}: RatingProps): JSX.Element {
-  const roundedRating = Math.round((rating / ExtremeRatingValue.MaxRating) * 100);
+  const roundedRating = Math.round(rating) / ExtremeRatingValue.MaxRating * 100;
   return render(roundedRating);
 }
 
