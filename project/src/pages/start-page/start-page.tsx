@@ -29,22 +29,24 @@ function StartPage(): JSX.Element {
     [offers, selectedCity]
   );
 
-  const sortedOffers = useMemo(
-    () =>
-      filteredOffers.sort((a, b) => {
-        switch (selectedSorting) {
-          case 'Price: high to low':
-            return b.price - a.price;
-          case 'Price: low to high':
-            return a.price - b.price;
-          case 'Top rated first':
-            return b.rating - a.rating;
-          default:
-            return 0;
-        }
-      }),
-    [filteredOffers, selectedSorting]
-  );
+  const sortedOffers = useMemo(() => {
+    if (selectedSorting === 'Popular') {
+      return filteredOffers;
+    }
+
+    return [...filteredOffers].sort((a, b) => {
+      switch (selectedSorting) {
+        case 'Price: high to low':
+          return b.price - a.price;
+        case 'Price: low to high':
+          return a.price - b.price;
+        case 'Top rated first':
+          return b.rating - a.rating;
+        default:
+          return 0;
+      }
+    });
+  }, [filteredOffers, selectedSorting]);
 
   const handleCardMouseOver = useCallback((offer: Offer | null) => {
     setActiveCard(offer);
@@ -75,7 +77,7 @@ function StartPage(): JSX.Element {
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
                 <b className="places__found">
-                  {`${offers.length} places to stay in ${selectedCity}`}
+                  {`${filteredOffers.length} places to stay in ${selectedCity}`}
                 </b>
 
                 <OptionsForm />
@@ -84,7 +86,6 @@ function StartPage(): JSX.Element {
                   offers={sortedOffers}
                   handleCardMouseOver={handleCardMouseOver}
                 />
-
               </section>
               <div className="cities__right-section">
                 <Map

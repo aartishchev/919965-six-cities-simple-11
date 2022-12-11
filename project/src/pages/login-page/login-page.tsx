@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { setCity } from '../../store/offers-process/offers-process';
@@ -49,7 +49,7 @@ function LoginPage(): JSX.Element {
     }
   }, [authorizationStatus, dispatch]);
 
-  const randomCity = Cities[Math.floor(Math.random() * Cities.length)];
+  const randomCity = useMemo(() => Cities[Math.floor(Math.random() * Cities.length)], []);
   const onCityClick = () => {
     dispatch(setCity({ targetCity: randomCity }));
     dispatch(redirectToRoute(AppRoute.Main));

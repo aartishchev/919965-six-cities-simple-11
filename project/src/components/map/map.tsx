@@ -45,12 +45,21 @@ function Map(props: MapProps): JSX.Element {
         setCurrentCity(city.name);
       }
 
-      const markers = offers.map((offer) => new Marker({
-        lat: offer.location.latitude,
-        lng: offer.location.longitude,
-      }, {
-        icon: offer.id === selectedOffer?.id ? currentCustomIcon : defaultCustomIcon
-      }));
+      const markers = offers.map(
+        (offer) =>
+          new Marker(
+            {
+              lat: offer.location.latitude,
+              lng: offer.location.longitude,
+            },
+            {
+              icon:
+                offer.id === selectedOffer?.id
+                  ? currentCustomIcon
+                  : defaultCustomIcon,
+            }
+          )
+      );
 
       const markersLayer = new LayerGroup(markers);
       markersLayer.addTo(map);
@@ -59,7 +68,7 @@ function Map(props: MapProps): JSX.Element {
         map.removeLayer(markersLayer);
       };
     }
-  }, [selectedOffer, city]);
+  }, [selectedOffer, city, currentCity, map, offers]);
 
   return <section className={classList} ref={mapRef} />;
 }
