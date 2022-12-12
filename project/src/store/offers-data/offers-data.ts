@@ -1,7 +1,11 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {NameSpace} from '../../const';
-import {OffersData} from '../../types/state';
-import {fetchOffersAction, fetchTargetOfferAction, sendReviewAction} from '../api-actions';
+import { createSlice } from '@reduxjs/toolkit';
+import { NameSpace } from '../../const';
+import { OffersData } from '../../types/state';
+import {
+  fetchOffersAction,
+  fetchTargetOfferAction,
+  sendReviewAction,
+} from '../api-actions';
 
 const initialState: OffersData = {
   offers: [],
@@ -46,5 +50,5 @@ export const offersData = createSlice({
       .addCase(sendReviewAction.fulfilled, (state, action) => {
         state.reviewsIncoming = action.payload;
       });
-  }
+  },
 });

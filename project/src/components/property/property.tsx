@@ -18,7 +18,7 @@ type PropertyProps = {
   reviewsIncoming: ReviewIncoming[];
 };
 
-function PropertyPage({ targetOffer, nearbyOffers, reviewsIncoming}: PropertyProps ): JSX.Element {
+function Property({ targetOffer, nearbyOffers, reviewsIncoming }: PropertyProps ): JSX.Element {
   const authorizationStatus = useAppSelector(getAuthorizationStatus);
 
   const {
@@ -194,4 +194,4 @@ function PropertyPage({ targetOffer, nearbyOffers, reviewsIncoming}: PropertyPro
   );
 }
 
-export default PropertyPage;
+export default Property;
