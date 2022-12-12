@@ -7,7 +7,7 @@ import PropertyPage from '../../pages/property-page/property-page';
 import StartPage from '../../pages/start-page/start-page';
 import ScrollToTop from '../scroll-to-top/scroll-to-top';
 import ContentLayout from '../../layouts/content-layout';
-import HistoryRouter from '../history-route/history-route';
+import HistoryRouter from '../history-router/history-router';
 import browserHistory from '../../browser-history';
 
 function App(): JSX.Element {

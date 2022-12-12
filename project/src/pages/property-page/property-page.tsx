@@ -7,7 +7,13 @@ import { Offer } from '../../types/offer';
 import NotFoundPage from '../not-found-page/not-found-page';
 import Loader from '../../components/loader/loader';
 import Property from '../../components/property/property';
-import { getDataLoadingStatus, getErrorStatus, getNearbyOffers, getReviewsIncoming, getTargetOffer } from '../../store/offers-data/offers-data-selectors';
+import {
+  getDataLoadingStatus,
+  getErrorStatus,
+  getNearbyOffers,
+  getReviewsIncoming,
+  getTargetOffer,
+} from '../../store/offers-data/offers-data-selectors';
 
 function PropertyPage(): JSX.Element {
   const { id: offerId } = useParams();
