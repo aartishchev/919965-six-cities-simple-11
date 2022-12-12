@@ -1,0 +1,10 @@
+import { screen, render } from '@testing-library/react';
+import Loader from './loader';
+
+describe('Component: Loader', () => {
+  it('should render correctly', () => {
+    render(<Loader />);
+
+    expect(screen.getByTestId('loader')).toBeInTheDocument();
+  });
+});

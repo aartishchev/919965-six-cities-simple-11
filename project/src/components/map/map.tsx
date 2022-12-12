@@ -70,7 +70,7 @@ function Map(props: MapProps): JSX.Element {
     }
   }, [selectedOffer, city, currentCity, map, offers]);
 
-  return <section className={classList} ref={mapRef} />;
+  return <section className={classList} ref={mapRef} data-testid="map" />;
 }
 
 export default memo(Map);

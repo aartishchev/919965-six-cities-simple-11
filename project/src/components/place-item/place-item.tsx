@@ -22,6 +22,7 @@ function PlaceItem({ offer, handleCardMouseOver }: PlaceItemProps): JSX.Element 
       className="cities__card place-card"
       onMouseEnter={() => { handleCardHover(offer); } }
       onMouseLeave={() => { handleCardHover(null); } }
+      data-testid="placeItem"
     >
       {isPremium && (
         <div className="place-card__mark">
