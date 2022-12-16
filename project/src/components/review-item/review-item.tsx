@@ -9,7 +9,7 @@ function ReviewItem({ review }: ReviewItemProps): JSX.Element {
   const { comment, date, rating, user } = review;
 
   return (
-    <li className="reviews__item">
+    <li className="reviews__item" data-testid="reviewItem">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
           <img

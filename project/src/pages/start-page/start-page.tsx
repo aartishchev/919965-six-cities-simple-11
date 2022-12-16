@@ -72,7 +72,7 @@ function StartPage(): JSX.Element {
         <CityTabs />
 
         <div className="cities">
-          {offers.length ? (
+          {filteredOffers.length ? (
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
@@ -93,6 +93,7 @@ function StartPage(): JSX.Element {
                   offers={filteredOffers}
                   selectedOffer={activeCard}
                   classList={'cities__map map'}
+                  data-testid={'map'}
                 />
               </div>
             </div>

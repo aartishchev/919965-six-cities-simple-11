@@ -1,19 +1,20 @@
+import { OffersData } from '../../types/state';
+import { offersData } from './offers-data';
+import { Offer } from '../../types/offer';
+import { ReviewIncoming } from '../../types/review';
+import {
+  makeFakeOffer,
+  makeFakeOffers,
+  makeFakeReviewsIncoming,
+} from './../../utils/mocks';
 import {
   fetchOffersAction,
   fetchTargetOfferAction,
   sendReviewAction,
 } from './../api-actions';
-import { makeFakeOffer, makeFakeReviewsIncoming } from './../../utils/mocks';
-import { OffersData } from '../../types/state';
-import { offersData } from './offers-data';
-import { datatype } from 'faker';
-import { Offer } from '../../types/offer';
-import { ReviewIncoming } from '../../types/review';
 
 const offer = makeFakeOffer();
-const offers = Array.from({ length: datatype.number(10) }, () =>
-  makeFakeOffer()
-);
+const offers = makeFakeOffers(3);
 
 const targetOffer = offer;
 const reviewsIncoming = makeFakeReviewsIncoming();
