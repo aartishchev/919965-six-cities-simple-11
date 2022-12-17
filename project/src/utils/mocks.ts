@@ -49,7 +49,7 @@ export const makeFakeOffer = (): Offer => ({
 });
 
 export const makeFakeOffers = (offersLength = 10) =>
-  Array.from({ length: datatype.number(offersLength) }, (element, index) => ({
+  Array.from({ length: offersLength }, (element, index) => ({
     ...makeFakeOffer(),
     id: index,
   }));
@@ -57,13 +57,13 @@ export const makeFakeOffers = (offersLength = 10) =>
 export const makeFakeReviewIncoming = (): ReviewIncoming => ({
   comment: datatype.string(),
   date: datatype.string(),
-  id: datatype.number(100),
+  id: datatype.number(),
   rating: datatype.number(5),
   user: makeFakeUserData(),
 });
 
 export const makeFakeReviewsIncoming = (): ReviewIncoming[] =>
-  Array.from({ length: datatype.number(10) }, (element, index) => ({ ...makeFakeReviewIncoming(), id: index }));
+  Array.from({ length: 10 }, (element, index) => ({ ...makeFakeReviewIncoming(), id: index }));
 
 
 export const makeFakeReviewOutgoing = (): ReviewOutgoing => ({

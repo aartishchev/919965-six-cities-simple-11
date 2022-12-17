@@ -26,10 +26,8 @@ const nearbyOffers = makeFakeOffers(3);
 const reviewsIncoming = makeFakeReviewsIncoming();
 
 const {
-  bedrooms,
   description,
   host,
-  maxAdults,
   price,
   title,
 } = targetOffer;
@@ -37,7 +35,8 @@ const {
 
 describe('Component: Property', () => {
   it('should render correctly', () => {
-    targetOffer.type = 'house';
+    targetOffer.maxAdults = 10;
+    targetOffer.bedrooms = 10;
 
     render(
       <Provider store={fakeStore}>
@@ -55,8 +54,8 @@ describe('Component: Property', () => {
 
     expect(screen.getByText(`€${price}`)).toBeInTheDocument();
     expect(screen.getByText(title)).toBeInTheDocument();
-    expect(screen.getByText(`${bedrooms} Bedrooms`)).toBeInTheDocument();
-    expect(screen.getByText(`Max ${maxAdults} adults`)).toBeInTheDocument();
+    expect(screen.getByText('10 Bedrooms')).toBeInTheDocument();
+    expect(screen.getByText('Max 10 adults')).toBeInTheDocument();
     expect(screen.getByAltText(/host avatar/i)).toHaveAttribute('src', host.avatarUrl);
     expect(screen.getByText(description)).toBeInTheDocument();
   });

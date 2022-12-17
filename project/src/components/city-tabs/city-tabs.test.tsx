@@ -33,37 +33,6 @@ describe('Component: AppHeader', () => {
     expect(screen.getByText('Hamburg')).toBeInTheDocument();
     expect(screen.getByText('Dusseldorf')).toBeInTheDocument();
   });
-
-  xit('selected city should contain active className', () => {
-    render(
-      <Provider store={fakeStore}>
-        <HistoryRouter history={history}>
-          <CityTabs />
-        </HistoryRouter>
-      </Provider>
-    );
-
-    // const element = container.querySelector('#sandbox > form > div:nth-child(2)');
-    // const element = within(screen.getByText('Brussels'));
-    //   console.log('element', element)
-  //  element.contains('tabs__item--active');
-  });
-
-  xit('should change selected city on click', () => {
-    render(
-      <Provider store={fakeStore}>
-        <HistoryRouter history={history}>
-          <CityTabs />
-        </HistoryRouter>
-      </Provider>
-    );
-
-    // await userEvent.click(screen.getByRole('button'));
-
-    // const actions = store.getActions();
-
-    // expect(actions[0].type).toBe('data/fetchQuestions/pending');
-  });
 });
 
 

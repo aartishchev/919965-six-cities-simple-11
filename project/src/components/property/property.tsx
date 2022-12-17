@@ -35,6 +35,9 @@ function Property({ targetOffer, nearbyOffers, reviewsIncoming }: PropertyProps 
     rating,
   } = targetOffer;
 
+  const bedroomsInfo = bedrooms > 1 ? `${bedrooms} Bedrooms` : `${bedrooms} Bedroom`;
+  const maxAdultsInfo = maxAdults > 1 ? `Max ${maxAdults} adults` : `Max ${maxAdults} adult`;
+
   const sortedReviews = [...reviewsIncoming].sort((a, b) => {
     if (dayjs(a.date).isBefore(dayjs(b.date))) {
       return 1;
@@ -102,10 +105,10 @@ function Property({ targetOffer, nearbyOffers, reviewsIncoming }: PropertyProps 
                   {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {bedrooms} Bedrooms
+                  {bedroomsInfo}
                 </li>
                 <li className="property__feature property__feature--adults">
-                  Max {maxAdults} adults
+                  {maxAdultsInfo}
                 </li>
               </ul>
 
