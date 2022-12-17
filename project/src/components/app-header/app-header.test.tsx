@@ -20,7 +20,7 @@ describe('Component: AppHeader', () => {
       USER: {
         authorizationStatus: AuthorizationStatus.NoAuth,
         userData: null,
-      }
+      },
     });
 
     render(
@@ -42,7 +42,7 @@ describe('Component: AppHeader', () => {
         userData: {
           email: fakeEmail,
         },
-      }
+      },
     });
 
     render(
@@ -61,22 +61,16 @@ describe('Component: AppHeader', () => {
     const fakeStore = mockStore({
       USER: {
         authorizationStatus: AuthorizationStatus.NoAuth,
-        userData: null
-      }
+        userData: null,
+      },
     });
 
     render(
       <Provider store={fakeStore}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route
-              path={AppRoute.Main}
-              element={<AppHeader />}
-            />
-            <Route
-              path={AppRoute.Login}
-              element={<h1>Mock login page</h1>}
-            />
+            <Route path={AppRoute.Main} element={<AppHeader />} />
+            <Route path={AppRoute.Login} element={<h1>Mock login page</h1>} />
           </Routes>
         </HistoryRouter>
       </Provider>
@@ -84,31 +78,5 @@ describe('Component: AppHeader', () => {
 
     await userEvent.click(screen.getByText('Sign in'));
     expect(screen.getByText('Mock login page')).toBeInTheDocument();
-  });
-
-  xit('should logout when "Sign out" is clicked', async () => {
-    const fakeEmail = internet.email();
-    const fakeStore = mockStore({
-      USER: {
-        authorizationStatus: AuthorizationStatus.Auth,
-        userData: {
-          email: fakeEmail,
-        },
-      }
-    });
-
-    render(
-      <Provider store={fakeStore}>
-        <HistoryRouter history={history}>
-          <AppHeader />
-        </HistoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole('button'));
-
-    // const actions = store.getActions();
-
-    // expect(actions[0].type).toBe('data/fetchQuestions/pending');
   });
 });

@@ -38,6 +38,8 @@ const {
 describe('Component: Property', () => {
   it('should render correctly', () => {
     targetOffer.type = 'house';
+    targetOffer.maxAdults = 10;
+    targetOffer.bedrooms = 10;
 
     render(
       <Provider store={fakeStore}>
